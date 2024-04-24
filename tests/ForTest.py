@@ -1,18 +1,17 @@
 from docx import Document
+from Utils import replace_picture,add_picture
 # 因为com.souche.word不是source_root，idea不识别，只会识别sourceroot python文件夹下面的资源，所以会有下划线，虽然运行不报错（前提是在同一个文件夹下面，是运行前idea帮助添加了sys.path.append）
 # content root是项目根,这个目录idea也会自动加入sys.path，跟source root 一样，这个在preferences -console - python console中设置
 # python.com.souche.word.Utils这种全路径的方式就不会错，因为python是sourceroot，根据这个路径能找到目标
 # mark sourceroot这种方式在idea运行是可以的，但是如果在控制台运行，就没有工具在运行前加到 sys.path 里了，所以还是在代码中要加上 sys.path.append(XXX),手动添加
 # from python.com.souche.word.Utils import is_nan 这一行如果不报错就要加 sys.path.append(/Users/mac/IdeaProjects/pythonTest/python)
 # Utils import is_nan 这一行如果不报错就要加 sys.path.append(/Users/mac/IdeaProjects/pythonTest/python/com/souche/word)
-from python.com.souche.word.Utils import is_nan
+from Utils import is_nan
+import sys,os
 
-import sys
-import ReadExcel
-import os,InsertPicture,ReplaceTest
 from docx.shared import Inches,Cm,Pt
 
-print(is_nan(100))
+# print(is_nan(100))
 
 # to_rep_site 是需要替换表格的点位，二位元祖，rep_site是替换内容所在点位
 def replace_table(file_name,to_rep_site,rep_site):
@@ -94,5 +93,14 @@ def replace_table(file_name,to_rep_site,rep_site):
 # l1.sort()
 # print(l1)
 
-print(sys.path)
+dir_path = r"/Users/mac/Desktop/tt.docx"
+document = Document(dir_path)
+replace_picture(document.tables[0],(2,0),["/Users/mac/Desktop/黄.jpg"],(6.45,16.00))
+document.save("/Users/mac/Desktop/tt1.docx")
 
+# root_paths = os.listdir(dir_path)
+# for root_path in root_paths:
+#     print(root_path)
+    # absolute_root_path = dir_path + "/" + root_path
+    # if os.path.isdir(absolute_root_path) and (not root_path.startswith('.')):
+    #     print(absolute_root_path)

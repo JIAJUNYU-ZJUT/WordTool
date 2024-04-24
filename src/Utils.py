@@ -196,6 +196,21 @@ def add_picture(table,cell_site,picture_paths,size):
         # picture.height=Cm(6.45)
         # picture.width=Cm(7.91)
 
+"""在文档的指定表格，指定位置，替换图片，图片可以是多个"""
+def replace_picture(table,cell_site,new_picture_paths,size):
+    # 找到要添加的单元格
+    cell = table.cell(cell_site[0],cell_site[1])
+    delete_paragraph(cell.paragraphs[1])
+    add_picture(table,cell_site,new_picture_paths,size)
+    # for picture_path in new_picture_paths:
+    #     paragraph = cell.add_paragraph()
+    #     run = paragraph.add_run()
+    #     picture =run.add_picture(picture_path)
+    #     picture.height=Cm(size[0])
+    #     picture.width=Cm(size[1])
+    #     # picture.height=Cm(6.45)
+    #     # picture.width=Cm(7.91)
+
 
 """path是文件夹的目录 如/Python34/news"""
 def read_dir(path):
