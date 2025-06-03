@@ -177,8 +177,8 @@ def read_excel_from_file(file_path,sheet_name):
     row_list = df.values.tolist()
     dic = {}
     for row in row_list:
-        key = row[0]
-        value = (row[3],row[4],row[5],row[7],row[8],row[9],row[11])
+        key = row[1]
+        value = (row[2],row[4])
         dic[key] = value
 
     return dic
@@ -232,6 +232,13 @@ def read_dir(path):
                 str = str + line
             # 每个文件的文本存到list中
             s.append(str)
+
+def set_font(cell):
+    cell.paragraphs[0].runs[0].font.name = "Times New Roman" #设置英文字体
+    cell.paragraphs[0].runs[0].font.size = Pt(9) # 字体大小
+    cell.paragraphs[0].runs[0]._element.rPr.rFonts.set(qn('w:eastAsia'), '楷体') #设置中文字体
+
+
 
 
 

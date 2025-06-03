@@ -21,11 +21,14 @@ def find_table_by_site_name(document,ori_file_name):
 def find_site_picture(pic_dir):
     files= os.listdir(pic_dir) #得到文件夹下的所有文件名称
     all_replace_site = {}
+    # print(files)
     for pic_file in files: #遍历图片文件
+        # print(pic_file)
         if not pic_file.startswith('.DS_Store'):
             site_name = pic_file.split('-')[0]
             if all_replace_site.get(site_name,None):
-                l = all_replace_site[site_name].append(pic_dir + pic_file)
+                l = all_replace_site[site_name]
+                l.append(pic_dir + pic_file)
                 l.sort()
                 all_replace_site[site_name] = l
             else:
@@ -34,35 +37,36 @@ def find_site_picture(pic_dir):
 
 def replace_picture_by_site_name(site_table,site_picture,dic_replace_result):
     for site_name in site_picture.keys():
+        # print(site_name)
         if site_table.get(site_name,None):
             pic_list = site_picture[site_name]
             # 根据图片数量判断要替换的数量
-            if pic_list == 2:
-                replace_picture(site_table[site_name][0],(2,0),[pic_list[0]],(6.45,16.00))
-                replace_picture(site_table[site_name][0],(2,1),[pic_list[1]],(6.45,16.00))
+            if len(pic_list) == 2:
+                add_picture(site_table[site_name][0],(2,0),[pic_list[0]],(6.44,7.89))
+                add_picture(site_table[site_name][0],(2,1),[pic_list[1]],(6.44,7.89))
                 dic_replace_result[site_name].append("替换 %s 文件中的 %s 点位2张图片" % (site_table[site_name][1],site_name))
             else:
-                replace_picture(site_table[site_name][0],(2,0),[pic_list[0]],(6.45,16.00))
-
+                add_picture(site_table[site_name][0],(2,0),[pic_list[0]],(6.44,16.00))
                 dic_replace_result[site_name].append("替换 %s 文件中的 %s 点位1张图片" % (site_table[site_name][1],site_name))
 
 
 
 # 图片文件所在文件夹
-pic_dir = '/Users/mac/Desktop/黄湖人脸/'
+pic_dir = '/Users/mac/Desktop/单点资料需修改0428/仁和人脸-压缩/'
 # 点位图片对应图
 site_picture = find_site_picture(pic_dir)
-print(site_picture)
+print("点位图片",site_picture)
 # 替换结果表
 dic_replace_result = {k : [] for k in site_picture.keys()}
-print(dic_replace_result)
+# print(dic_replace_result)
 # word文件所在文件夹
-file_dir = '/Users/mac/Desktop/替换/'
+file_dir = '/Users/mac/Desktop/单点资料需修改0428/3-2.仁和-可打印/'
 #得到文件夹下的所有文件名称
 files= os.listdir(file_dir)
 # 遍历处理word文件
 for word_file in files:
-    if not word_file.startswith('.DS_Store'):
+    if not word_file.startswith('.'):
+        # print(word_file)
         # 文件全路径名
         ori_file_path = file_dir + word_file
         # 文件名
@@ -73,10 +77,11 @@ for word_file in files:
         document = Document(ori_file_path)
         # 获取文件点位table对应图
         site_table = find_table_by_site_name(document,ori_file_name)
-        print(site_table)
+        print("点位table",site_table)
         # 根据点位table和点位图片结果进行替换替换
         replace_picture_by_site_name(site_table,site_picture,dic_replace_result)
         # 保存文件
-        document.save(save_file_path)
-
-print(dic_replace_result)
+        # document.save(save_file_path)
+        document.save(ori_file_path)
+for k,v in  dic_replace_result.items():
+    print(k,v)
