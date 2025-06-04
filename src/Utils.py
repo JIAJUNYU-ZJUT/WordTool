@@ -178,7 +178,7 @@ def read_excel_from_file(file_path,sheet_name):
     dic = {}
     for row in row_list:
         key = row[1]
-        value = (row[2],row[4])
+        value = (row[2],row[4],row[6])
         dic[key] = value
 
     return dic

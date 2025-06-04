@@ -1,5 +1,5 @@
-from docx import Document
-
+# from docx import Document
+import docx
 # 因为com.souche.word不是source_root，idea不识别，只会识别sourceroot python文件夹下面的资源，所以会有下划线，虽然运行不报错（前提是在同一个文件夹下面，是运行前idea帮助添加了sys.path.append）
 # content root是项目根,这个目录idea也会自动加入sys.path，跟source root 一样，这个在preferences -console - python console中设置
 # python.com.souche.word.Utils这种全路径的方式就不会错，因为python是sourceroot，根据这个路径能找到目标
@@ -34,7 +34,7 @@ def find_site_picture(pic_dir):
 
 
 def replace_table(file_name,to_rep_site,rep_site):
-    document=Document(file_name)
+    document=docx.Document(file_name)
     tables = document.tables
 
     # 获取点位坐标值
@@ -143,11 +143,41 @@ def replace_table(file_name,to_rep_site,rep_site):
 #
 # res = read_excel_from_file('/Users/mac/Desktop/仁和/勘点、单点资料对照.xlsx','仁和所')
 # print(res)
+if __name__ == '__main__':
+    document = docx.Document('/Users/mac/Desktop/资料待做/仁和/资料-400W低照度球机/YHQTWGCXMEQ（GABJ）-DDYSD-RHPCS-00008.docx')
+    table0 = document.tables[0]
+    run = table0.rows[0].cells[6].paragraphs[0].runs[0]
+    print(run.text)
+    # cells = table0.rows[0].cells
+    # for j,cell in enumerate(cells):
+    #     print(j)
+    #     print(cell.paragraphs[0].runs[0].text)
+    # run1 = table0.rows[0].cells[1].paragraphs[0].runs[0]
+    # run2 = table0.rows[1].cells[1].paragraphs[0].runs[0]
+    # run3 = table0.rows[2].cells[3].paragraphs[0].runs[0]
+    # print(run1.text)
+    # print(run2.text)
+    # print(run3.text)
+    # paragraphs = document.paragraphs
+    #
+    # ori_dwmc = paragraphs[3].text
+    # print(ori_dwmc)
+    # print(paragraphs[3].runs[0].text)
+    # print(paragraphs[23].runs[0].text)
+    # document.core_properties
+    # secs = document.sections
+    # print(len(document.part))
+    # document.settings.odd_and_even_pages_header_footer = True
+    # document.sections[0].even_page_header.paragraphs[0].text = "这是偶数页页眉"
+    # document.sections[0].header.paragraphs[0].text = "这是奇数页页眉"
+    #
+    # # for j,sec in enumerate(secs):
+    # #     print(j)
+    # #     sec.header.paragraphs[0].text = "这是第%s页眉"%(str(j))
+    # document.save('/Users/mac/Desktop/测试/t.docx')
 
-# document = Document('/Users/mac/Desktop/仁和/资料-400W低照度球机/YHQTWGCXMEQ（GABJ）-DDYSD-RHPCS-00008.docx')
-# paragraphs = document.paragraphs
-#
-# ori_dwmc = paragraphs[3].text
-# print(ori_dwmc)
-# print(paragraphs[3].runs[0].text)
-# print(paragraphs[23].runs[0].text)
+    # document.core_properties.pages
+    # paragraphs = document.paragraphs
+    # for i,para in enumerate(paragraphs):
+    #     print(str(i) + para.text)
+    #     print(len(para.text))

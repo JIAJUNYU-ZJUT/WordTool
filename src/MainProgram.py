@@ -223,10 +223,10 @@ def single_dir_process2(root_path,excel_file_path,sheet_name,save_path,pic_path)
             bjbh_dwmc = excel_value[0]
             # 设备类型
             sblx = excel_value[1]
-
-            result_value.append('原始点位名称：' + ori_dwmc)
-            result_value.append('报警编号-点位名称：'+bjbh_dwmc)
+            # 计划取电位置
+            jhqdwz = excel_value[2]
             result_value.append('设备类型：' + sblx)
+            result_value.append('原始点位名称：' + ori_dwmc)
             # result_value.append('安装类型：'+az_type)
             # result_value.append('杆件高度：' + str(gj_high))
             # result_value.append('挑臂长度：' + str(tb_len))
@@ -241,9 +241,25 @@ def single_dir_process2(root_path,excel_file_path,sheet_name,save_path,pic_path)
                 not_replace.append(file+'')
                 # document.save()
                 continue
-            # 替换表格中的名称
+
             table0 = document.tables[0]
+            result_value.append('word表格中原点位名称：'+ table0.rows[0].cells[1].paragraphs[0].runs[0].text)
+            # 替换表格中的名称
             replace_table_text(table0,0,1,bjbh_dwmc)
+            result_value.append('替换的点位名称：' + bjbh_dwmc)
+
+            ori_qdwz = table0.rows[0].cells[6].paragraphs[0].runs[0].text
+            result_value.append('word表格中原取电位置：'+ ori_qdwz)
+            # 替换取电位置
+            replace_table_text(table0,0,6,jhqdwz)
+            result_value.append('替换的取电位置：' + jhqdwz)
+            result_value.append('取电位置是否相同：' + str(jhqdwz == ori_qdwz))
+            if sblx in ('治安监控（800W双目拼接球机）','人脸卡口（800W双摄双云台人脸相机）','人脸卡口（枪球联动摄像机）','高空瞭望（1200W全景AR高空摄像机）'):
+                result_value.append('图片应该有：2张')
+                tpsl = 2
+            elif sblx in ('治安监控（400W低照度球机）','人脸卡口（800W人脸枪机）','高空瞭望（400W高倍率高空摄像机）'):
+                result_value.append('图片应该有：1张')
+                tpsl = 1
             # --------------------第一部分-------------------------
 
             # --------------------第二部分，替换表格内容-------------------------
@@ -298,7 +314,8 @@ def single_dir_process2(root_path,excel_file_path,sheet_name,save_path,pic_path)
                     picture_count_error.append(file+' 图片缺少')
             else:
                 picture_error.append(file+'')
-            result_value.append('图片数量：' + str(len(f)))
+            result_value.append('图片实际数量：' + str(len(f)) + '张')
+            result_value.append('图片数量是否相同：' + str(len(f) == tpsl))
             result_value.append(f)
             # -----------------第三部分------------------------
             # 保存
@@ -330,15 +347,15 @@ def single_dir_process2(root_path,excel_file_path,sheet_name,save_path,pic_path)
 """处理一个目标文件夹下面的所有目录"""
 if __name__ == '__main__':
     # dir_path是要处理的所有文件夹的父目录
-    dir_path = r"/Users/mac/Desktop/仁和copy" #文件夹目录
+    dir_path = r"/Users/mac/Desktop/资料待做/仁和" #文件夹目录
     root_paths = os.listdir(dir_path)
     for root_path in root_paths:
         absolute_root_path = dir_path + "/" + root_path
         if os.path.isdir(absolute_root_path) and (not root_path.startswith('.')):
-            excel_file_path = r"/Users/mac/Desktop/仁和copy/勘点、单点资料对照.xlsx"
+            excel_file_path = r"/Users/mac/Desktop/勘点、单点资料对照（取电）.xlsx"
             sheet_name = "仁和所"
             save_path = r"/Users/mac/Desktop/测试/" + root_path
             if not os.path.exists(save_path):
                 os.mkdir(save_path)
-            pic_path = r"/Users/mac/Desktop/图片"
-            single_dir_process2(absolute_root_path,excel_file_path,sheet_name,save_path,pic_path)
+            pic_path = r"/Users/mac/Desktop/压缩图片"
+            single_dir_process2(absolute_root_path,excel_file_path,sheet_name,absolute_root_path,pic_path)
