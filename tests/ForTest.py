@@ -6,6 +6,7 @@ import docx
 # mark sourceroot这种方式在idea运行是可以的，但是如果在控制台运行，就没有工具在运行前加到 sys.path 里了，所以还是在代码中要加上 sys.path.append(XXX),手动添加
 # from python.com.souche.word.Utils import is_nan 这一行如果不报错就要加 sys.path.append(/Users/mac/IdeaProjects/pythonTest/python)
 # Utils import is_nan 这一行如果不报错就要加 sys.path.append(/Users/mac/IdeaProjects/pythonTest/python/com/souche/word)
+# 加一个标记
 from Utils import is_nan,read_excel_from_file
 import sys,os
 
